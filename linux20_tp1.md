@@ -40,7 +40,7 @@ user web;
 
  - les sites doivent être servis en HTTPS sur le port 443 et en HTTP sur le port 80
 
-A FAIRE
+PAs réussi, non compréhensison du fichier de conf
 
 :sun_with_face: Prouver que la machine node2 peut joindre les deux sites web.
 ```
@@ -98,11 +98,9 @@ sudo crontab -e -u backup
 
 :sun_with_face: Restauration site antérieur : 
 
-A FAIRE
+C'est assez simple, il faudra juste decompresser l'archive à la place du site que l'on voudra restaurer avec la commande `tar -zxvf Nom_de_larchive.tar.gz`
 
 :alien: SystemD
-
-backup la plus ancienne
 
 ```
 [adrien@node1 ~]$ ls -alt1 /opt/backup/
