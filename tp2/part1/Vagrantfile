@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+  node1_DISK = './node1_DISK.vdi'
+  config.vm.box = "centos/7"
+  config.vbguest.auto_update = false
+  config.vm.box_check_update = false 
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.provision :shell, path: "script.sh", run: 'always'
+
+  config.vm.define "node1" do |node1|
+    node1.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+      # Crée le disque, uniquement s'il nexiste pas déjà
+      unless File.exist?(node1_DISK)
+        vb.customize ['createhd', '--filename', node1_DISK, '--variant', 'Fixed', '--size', 5 * 1024]
+      end
+      # Attache le disque à la VM
+      vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', node1_DISK]
+    end
+    node1.vm.box = "centos/7"
+    node1.vm.box_url = "https://app.vagrantup.com/centos/boxes/7/versions/2004.01/providers/virtualbox.box"
+    node1.vm.hostname = "node1"
+    node1.vm.network "private_network", ip: "192.168.2.11", netmask:"255.255.255.0"
+  end
+end
