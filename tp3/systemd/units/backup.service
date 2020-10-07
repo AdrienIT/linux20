@@ -1,0 +1,30 @@
+[Unit]
+    Description=backup
+
+[Service]
+    Type=oneshot
+#    PIDFile=/var/run/backup.pid
+    ExecStartPre=/opt/script/backup_test.sh /srv/site1
+    ExecStartPre=/opt/script/backup_test.sh /srv/site2
+    ExecStart=/opt/script/backup.sh /srv/site1
+    ExecStart=/opt/script/backup.sh /srv/site2
+    ExecStop=/opt/script/backup_rota.sh
+    User=backup
+
+    NoNewPrivileges=yes
+	PrivateTmp=yes
+	PrivateDevices=yes
+	DevicePolicy=closed
+	ProtectSystem=strict
+	ProtectHome=read-only
+	ProtectControlGroups=yes
+	ProtectKernelModules=yes
+	ProtectKernelTunables=yes
+	RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+	RestrictNamespaces=yes
+	RestrictRealtime=yes
+	RestrictSUIDSGID=yes
+	MemoryDenyWriteExecute=yes
+	LockPersonality=yes
+[Install]
+    WantedBy=multi-user.target
