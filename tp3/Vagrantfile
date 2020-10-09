@@ -6,14 +6,14 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.define "node1" do |node1|
-    node1.vm.network "private_network", ip: "192.168.3.32"
+    node1.vm.network "private_network", ip: "192.168.3.31"
     node1.vm.hostname = "node1"
     node1.vm.provision "file", source: "scripts/backup_test.sh", destination: "/tmp/backup_test.sh"
     node1.vm.provision "file", source: "scripts/backup.sh", destination: "/tmp/backup.sh"
     node1.vm.provision "file", source: "scripts/backup_rota.sh", destination: "/tmp/backup_rota.sh"
-    node1.vm.provision "file", source: "systemd/units/web.service", destination: "/etc/systemd/system/"
-    node1.vm.provision "file", source: "systemd/units/backup.service", destination: "/etc/systemd/system/"
-    node1.vm.provision "file", source: "systemd/units/backup.timer", destination: "/etc/systemd/system/"
+    node1.vm.provision "file", source: "systemd/units/web.service", destination: "/tmp/web.service"
+    node1.vm.provision "file", source: "systemd/units/backup.service", destination: "/tmp/backup.service"
+    node1.vm.provision "file", source: "systemd/units/backup.timer", destination: "/tmp/backup.timer"
     node1.vm.provision :shell, path: "scripts/node1.sh", run: 'always'
   end
 end

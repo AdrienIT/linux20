@@ -29,6 +29,10 @@ mv /tmp/backup_test.sh /opt/script/backup_test.sh
 mv /tmp/backup.sh /opt/script/backup.sh
 mv /tmp/backup_rota.sh /opt/script/backup_rota.sh
 
+mv /tmp/backup.timer /etc/systemd/system/backup.timer
+mv /tmp/backup.service /etc/systemd/system/backup.service
+mv /tmp/web.service /etc/systemd/system/web.service
+
 
 chown backup:backup /opt/script/backup_test.sh
 chmod 755 /opt/script/backup_test.sh
