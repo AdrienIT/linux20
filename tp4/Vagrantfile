@@ -1,0 +1,30 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos7-custom"
+  config.vbguest.auto_update = false
+  config.vm.box_check_update = false 
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.define "gitea" do |gitea|
+    gitea.vm.network "private_network", ip: "192.168.4.11"
+    gitea.vm.hostname = "gitea"
+    gitea.vm.provision :shell, path: "scripts/gitea.sh", run: 'always'
+  end
+
+  config.vm.define "maria" do |maria|
+    maria.vm.network "private_network", ip: "192.168.4.12"
+    maria.vm.hostname = "maria"
+    maria.vm.provision :shell, path: "scripts/maria.sh", run: 'always'
+  end
+
+  config.vm.define "nginx" do |nginx|
+    nginx.vm.network "private_network", ip: "192.168.4.13"
+    nginx.vm.hostname = "nginx"
+    nginx.vm.provision :shell, path: "scripts/nginx.sh", run: 'always'
+  end
+
+  config.vm.define "nfs" do |nfs|
+    nfs.vm.network "private_network", ip: "192.168.4.14"
+    nfs.vm.hostname = "nfs"
+    nfs.vm.provision :shell, path: "scripts/nfs.sh", run: 'always'
+  end
+end
