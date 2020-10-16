@@ -1,9 +1,6 @@
 #!/bin/bash
 # AdrienIT
 
-yum install -y yum install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig curl jq nodejs wget git
-yum update
-
 wget -O gitea https://dl.gitea.io/gitea/1.12.5/gitea-1.12.5-linux-amd64
 
 sudo adduser --shell /bin/bash --home /home/git git
@@ -17,20 +14,6 @@ chmod 770 /etc/gitea
 export GITEA_WORK_DIR=/var/lib/gitea/
 cp gitea /usr/local/bin/gitea
 chmod +x /usr/local/bin/gitea
-
-echo -e "
-# This file controls the state of SELinux on the system.
-# SELINUX= can take one of these three values:
-#     enforcing - SELinux security policy is enforced.
-#     permissive - SELinux prints warnings instead of enforcing.
-#     disabled - No SELinux policy is loaded.
-SELINUX=disabled
-# SELINUXTYPE= can take one of three values:
-#     targeted - Targeted processes are protected,
-#     minimum - Modification of targeted policy. Only selected processes are protected. 
-#     mls - Multi Level Security protection.
-SELINUXTYPE=minimum
-" > /etc/selinux/conf
 
 
 
@@ -110,17 +93,14 @@ systemctl enable gitea
 systemctl start gitea
 
 
-systemctl enable firewalld
-systemctl start firewalld
 sudo firewall-cmd --add-port=3000/tcp --permanent
-sudo firewall-cmd --add-port=19999/tcp --permanent
 sudo firewall-cmd --reload
 
 mkdir /mnt/nfsfileshare
 
 mount 192.168.4.14:/nfsfileshare/gitea /mnt/nfsfileshare
 
-#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
+bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
 
 useradd backup -u 1003 -s /sbin/nologin
 
@@ -134,3 +114,4 @@ chmod 755 /opt/script_backup_gitea.sh
 
 chown backup:backup /mnt/nfsfileshare
 chmod 755 /mnt/nfsfileshare
+

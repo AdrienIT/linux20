@@ -42,6 +42,7 @@ SELINUXTYPE=minimum
 
 
 #basics of systemctl
+
 systemctl enable firewalld
 systemctl start firewalld
 sudo firewall-cmd --add-port=19999/tcp --permanent

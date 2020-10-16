@@ -1,3 +1,44 @@
+# TP4 : Déploiement multi-noeud
+
+## Rendu TP : 
+
+### Schéma du repo : 
+
+```
+.
+├── centos7-custom.box
+├── scripts
+│   ├── gitea
+│   │   ├── backup.service
+│   │   ├── gitea.sh
+│   │   └── script_backup_gitea.sh
+│   ├── mariadb
+│   │   ├── backup.service
+│   │   ├── backup_sql.sh
+│   │   └── maria.sh
+│   ├── nfs
+│   │   └── nfs.sh
+│   ├── nginx
+│   │   ├── backup.service
+│   │   ├── nginx.sh
+│   │   └── script_backup_nginx.sh
+│   └── repackage.sh
+└── Vagrantfile
+```
+
+
+#### Conseil de lancement : 
+
+start nfs en premier puis le reste sinon ya un "no route to host" qui pop lors du `mount`
+
+#### Notes utiles : 
+
+user+pwd gitea : gitea:gitea
+Pas de pwd user root mysql
+
+### Vagrant file : 
+
+```bash
 Vagrant.configure("2") do |config|
   config.vm.box = "centos7-custom"
   config.vbguest.auto_update = false
@@ -33,10 +74,14 @@ Vagrant.configure("2") do |config|
     nfs.vm.hostname = "nfs"
     nfs.vm.provision :shell, path: "scripts/nfs/nfs.sh", run: 'always'
   end
-
-  #config.vm.define "test" do |test|
-    #test.vm.network "private_network", ip: "192.168.4.15"
-    #test.vm.hostname = "test"
-    #test.vm.provision :shell, path: "test/test.sh", run: 'always'
-  #end
 end
+```
+
+### Liste des hosts
+
+| name | IP   | Role |
+| ---- | ---- | ---- |
+| gitea|192.168.4.11|Serveur hebergeant le Gitea|
+| maria|192.168.4.12|Serveur hebergeant  base de données|
+| nginx|192.168.4.13|Serveur Nginx agissant comme reverse-proxy|
+| nfs|192.168.4.14|Serveur de fichiers commun (utilisé pour save les backups)|
