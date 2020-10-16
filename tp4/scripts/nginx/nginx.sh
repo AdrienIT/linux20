@@ -71,3 +71,12 @@ mount 192.168.4.14:/nfsfileshare/nginx /mnt/nfsfileshare
 #bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
 
 useradd backup -u 1003 -s /sbin/nologin
+
+echo -e "%backup  ALL=(ALL)       NOPASSWD: /opt/script_backup_nginx.sh, /usr/bin/systemctl" >> /etc/sudoers
+usermod -aG backup backup
+
+chown backup:backup /opt/script_backup_nginx.sh
+chmod 755 /opt/script_backup_nginx.sh
+
+chown backup:backup /mnt/nfsfileshare
+chmod 755 /mnt/nfsfileshare

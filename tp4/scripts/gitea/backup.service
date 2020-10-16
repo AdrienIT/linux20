@@ -1,0 +1,13 @@
+[Unit]
+Description=backup gitea
+
+[Service]
+User=backup
+Group=backup
+UMask=277
+
+Type=oneshot
+ExecStart=/opt/script_backup_gitea.sh /etc/gitea
+
+[Install]
+WantedBy=multi-user.target

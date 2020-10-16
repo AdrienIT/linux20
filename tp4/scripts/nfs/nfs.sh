@@ -4,11 +4,13 @@
 yum install -y yum install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autogen automake pkgconfig curl jq nodejs wget git epel-releae nginx nfs-utils
 yum update
 
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
+#bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
 
 
-systemctl start nfs-server rpcbind
 systemctl enable nfs-server rpcbind
+systemctl start nfs-server rpcbind
+
+mkdir /nfsfileshare
 
 mkdir /nfsfileshare/gitea
 mkdir /nfsfileshare/maria
@@ -24,6 +26,7 @@ echo -e "
 
 exportfs -r
 
+systemctl start firewalld
 firewall-cmd --permanent --add-service mountd
 firewall-cmd --permanent --add-service rpc-bind
 firewall-cmd --permanent --add-service nfs

@@ -1,0 +1,9 @@
+[Unit]
+Description=backup database giteadb
+
+[Service]
+Type=oneshot
+ExecStart=/opt/backup_sql.sh
+
+[Install]
+WantedBy=multi-user.target

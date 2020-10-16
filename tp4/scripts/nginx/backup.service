@@ -1,0 +1,13 @@
+[Unit]
+Description=backup nginx
+
+[Service]
+User=backup
+Group=backup
+UMask=277
+
+Type=oneshot
+ExecStart=/opt/script_backup_nginx.sh /etc/nginx
+
+[Install]
+WantedBy=multi-user.target

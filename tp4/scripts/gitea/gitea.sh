@@ -14,9 +14,9 @@ chmod -R 750 /var/lib/gitea/
 mkdir /etc/gitea
 chown root:git /etc/gitea
 chmod 770 /etc/gitea
-chmod +x /usr/local/bin/gitea
 export GITEA_WORK_DIR=/var/lib/gitea/
 cp gitea /usr/local/bin/gitea
+chmod +x /usr/local/bin/gitea
 
 echo -e "
 # This file controls the state of SELinux on the system.
@@ -106,8 +106,8 @@ WantedBy=multi-user.target
 " > /etc/systemd/system/gitea.service
 
 systemctl daemon-reload
-systemctl enable gitea 
-systemctl start gitea 
+systemctl enable gitea
+systemctl start gitea
 
 
 systemctl enable firewalld
@@ -124,23 +124,10 @@ mount 192.168.4.14:/nfsfileshare/gitea /mnt/nfsfileshare
 
 useradd backup -u 1003 -s /sbin/nologin
 
-echo -e "
-[Unit]
-Description=backup gitea
-
-[Service]
-User=backup
-Group=backup
-UMask=277
-
-Type=oneshot
-ExecStart=/opt/script_backup_gitea.sh /etc/gitea
-
-[Install]
-WantedBy=multi-user.target
-" > /ect/systemd/system/backup.service
-
 mv /tmp/script_backup_gitea.sh /opt/script_backup_gitea.sh
+mv /tmp/backup.service /etc/systemd/system/backup.service
+
+chown backup:root /etc/gitea
 
 chown backup:backup /opt/script_backup_gitea.sh
 chmod 755 /opt/script_backup_gitea.sh
